@@ -85,7 +85,6 @@ function App() {
     });
     const arr = [];
     Object.keys(objectOfRegions).forEach((item) => arr.push(item));
-    console.log(arr);
     arrOfRegionsHandler(arr);
   };
 
