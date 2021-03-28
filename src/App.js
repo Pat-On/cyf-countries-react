@@ -5,12 +5,32 @@ import React, { useEffect, useState } from "react";
 import CountryElement from "./countryElement";
 import SearchBar from "./SearchBar";
 import SelectMenu from "./SelectMenu";
+import CountryFullDetails from "./CountryFullDetails";
 
 function App() {
   const [allCountries, allCountriesHandler] = useState([]);
   const [searchResults, searchResultsHandler] = useState([]);
   const [arrOfRegions, arrOfRegionsHandler] = useState([]);
   const [arrayNeededToSearch, arrayNeededToSearchHandler] = useState([]);
+
+  const [tooglerHiddenBoolean, tooglerHiddenBooleanHandler] = useState(true);
+  const [countryToMoreDetail, countryToMoreDetailHandler] = useState([]);
+
+  const returnFunction = () => {
+    tooglerHiddenBooleanHandler(!tooglerHiddenBoolean);
+  };
+
+  const displayDetailsOfCountry = (e, code) => {
+    e.preventDefault();
+
+    const query = code;
+    fetch(`https://restcountries.eu/rest/v2/alpha?codes=${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        countryToMoreDetailHandler(data);
+        tooglerHiddenBooleanHandler(false);
+      });
+  };
 
   const regionFunctionSelector = (e) => {
     const query = e.target.value;
@@ -114,16 +134,30 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <SelectMenu
-        selectFunction={regionFunctionSelector}
-        regionsOptions={arrOfRegions}
-      />
-      <SearchBar searchFunction={searchCountryFunction} />
-      <div className="countryContainer">
-        {searchResults.map((item, index) => (
-          <CountryElement key={index} item={item} />
-        ))}
+    <div>
+      {!tooglerHiddenBoolean ? (
+        <CountryFullDetails
+          selectNeighbours={displayDetailsOfCountry}
+          returnFunction={returnFunction}
+          country={countryToMoreDetail}
+        />
+      ) : null}
+
+      <div className={tooglerHiddenBoolean ? "App" : "App hiddenClass"}>
+        <SelectMenu
+          selectFunction={regionFunctionSelector}
+          regionsOptions={arrOfRegions}
+        />
+        <SearchBar searchFunction={searchCountryFunction} />
+        <div className="countryContainer">
+          {searchResults.map((item, index) => (
+            <CountryElement
+              functionToDisplayDetails={displayDetailsOfCountry}
+              key={index}
+              item={item}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
