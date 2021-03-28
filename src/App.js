@@ -37,8 +37,8 @@ function App() {
     let arr = [];
     switch (query) {
       case "ALL":
-        const arrcopy = [...allCountries];
-        searchResultsHandler(arrcopy);
+        const arrCopy = [...allCountries];
+        searchResultsHandler(arrCopy);
         break;
       case "Asia":
         arr = allCountries.filter(
