@@ -3,7 +3,7 @@ import React from "react";
 const countryElement = (props) => {
   return (
     <div className="countryElement">
-      <img src={props.item.flag} />
+      <img src={props.item.flag} alt={props.item.name} />
       <h2>{props.item.name}</h2>
       <p>Population: {props.item.population}</p>
       <p>Region: {props.item.region}</p>
