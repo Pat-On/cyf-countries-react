@@ -28,6 +28,7 @@ const countryFullDetails = (props) => {
           Border Countries:
           {props.country[0].borders.map((item) => (
             <button
+              key={item}
               onClick={(e) => props.selectNeighbours(e, item)}
               style={{ margin: "10px" }}
             >
